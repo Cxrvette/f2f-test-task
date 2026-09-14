@@ -242,3 +242,23 @@ npx playwright show-report
 1. Все файлы с тестами (например, `tests/*.spec.ts`)
 2. `playwright.config.ts`
 3. Краткое описание (в комментариях или отдельном файле `NOTES.md`) найденных багов или неожиданного поведения приложения
+
+---
+
+## Запуск реализованных E2E-тестов
+
+```bash
+npm install
+npx playwright install chromium
+docker compose up -d --build
+npm run test:e2e
+```
+
+Режим с видимым браузером: `npm run test:e2e:headed`.
+Интерактивный режим: `npm run test:e2e:ui`.
+
+Тесты находятся в `tests/`, настройки — в `playwright.config.ts`, найденные
+ограничения и дефекты приложения описаны в `NOTES.md`.
+
+Подробные тест-кейсы с критичностью, предусловиями, входными данными и ожидаемыми
+результатами находятся в [`TEST_CASES.md`](./TEST_CASES.md).
