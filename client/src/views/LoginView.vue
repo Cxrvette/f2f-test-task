@@ -38,20 +38,20 @@ const handleLogin = async () => {
 
 <template>
   <div class="login-container">
-    <h2>Login to F2F Bank</h2>
+    <h2 data-testid="login-title">Login to F2F Bank</h2>
     <h3>Fast transfers to your contacts — in just a few clicks</h3>
 
     <form @submit.prevent="handleLogin">
       <div class="form-group">
         <label>Email</label>
-        <AppInput type="email" v-model="email" required name="email" placeholder="Type your email" />
+        <AppInput data-testid="login-email" type="email" v-model="email" required name="email" placeholder="Type your email" />
       </div>
 
       <div class="form-group">
         <label>Password</label>
-        <AppInput type="password" v-model="password" required name="password" placeholder="Type your password" />
+        <AppInput data-testid="login-password" type="password" v-model="password" required name="password" placeholder="Type your password" />
       </div>
-      <AppButton type="submit"> Login </AppButton>
+      <AppButton data-testid="login-submit" type="submit"> Login </AppButton>
 
       <div class="form-group">
         If you don't have an account, please, welcome to <a href="/register">Register page</a>

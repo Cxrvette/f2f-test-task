@@ -21,10 +21,10 @@ const logout = async () => {
       <h1 class="header__title">F2F Bank</h1>
     </RouterLink>
     <nav class="header__navigation" v-if="userStore.isExist">
-      <h2 class="header__link">Balance: {{ userStore.balance.amount }}</h2>
+      <h2 class="header__link" data-testid="header-balance">Balance: {{ userStore.balance.amount }}</h2>
       <RouterLink class="header__link" to="/">Main</RouterLink>
       <RouterLink class="header__link" to="/profile">Profile</RouterLink>
-      <RouterLink class="header__link" to="/transactions">Transactions</RouterLink>
+      <RouterLink class="header__link" to="/transactions" data-testid="transactions-link">Transactions</RouterLink>
       <div class="header__link">
         <AppButton type="button" @click="logout">
           <LogoutIcon />

@@ -64,13 +64,13 @@ const handleSubmit = async () => {
     <div class="card">
       <div class="card-header">
         <div class="sbp-logo">SBP</div>
-        <div class="card-title">Transfer by phone number</div>
+        <div class="card-title" data-testid="transfer-title">Transfer by phone number</div>
         <div class="balance-hint">Balance: {{ userStore.balance.amount }}</div>
       </div>
 
       <div v-if="success" class="success-block">
         <div class="success-icon">✓</div>
-        <div class="success-text">Transfer completed</div>
+        <div class="success-text" data-testid="transfer-success">Transfer completed</div>
         <button class="btn-outline" @click="reset">New transfer</button>
       </div>
 
@@ -78,18 +78,20 @@ const handleSubmit = async () => {
         <div class="form-group">
           <label>Phone number</label>
           <AppInput
+            data-testid="transfer-phone"
             v-model="phone"
             name="phone"
             type="text"
             placeholder="+7 999 123-45-67"
             @blur="validatePhone"
           />
-          <span v-if="phoneError" class="field-error">{{ phoneError }}</span>
+          <span v-if="phoneError" class="field-error" data-testid="phone-error">{{ phoneError }}</span>
         </div>
 
         <div class="form-group">
           <label>Amount</label>
           <AppInput
+            data-testid="transfer-amount"
             v-model="amount"
             name="amount"
             type="number"
@@ -101,6 +103,7 @@ const handleSubmit = async () => {
         <div class="form-group">
           <label>Payment purpose</label>
           <AppInput
+            data-testid="transfer-purpose"
             v-model="purpose"
             name="purpose"
             type="text"
@@ -110,7 +113,7 @@ const handleSubmit = async () => {
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn-primary" :disabled="isLoading">
+          <button data-testid="transfer-submit" type="submit" class="btn-primary" :disabled="isLoading">
             {{ isLoading ? 'Sending...' : 'Send' }}
           </button>
           <button type="button" class="btn-outline" @click="reset">Cancel</button>

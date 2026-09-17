@@ -65,9 +65,9 @@ const onCloseModal = () => {
   <div class="transactions">
     <div class="transactions__card">
       <div class="header">
-        <h2>Transactions</h2>
+        <h2 data-testid="transactions-title">Transactions</h2>
         <div>
-          <AppButton @click="openModal">Add balance</AppButton>
+          <AppButton data-testid="open-balance-modal" @click="openModal">Add balance</AppButton>
         </div>
       </div>
       <TransactionsTable :transactions="transactions" />

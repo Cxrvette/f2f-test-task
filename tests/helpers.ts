@@ -1,4 +1,8 @@
 import { expect, type APIRequestContext, type Page } from '@playwright/test'
+import { HeaderComponent } from './pages/HeaderComponent'
+import { LoginPage } from './pages/LoginPage'
+import { TransactionsPage } from './pages/TransactionsPage'
+import { TransferPage } from './pages/TransferPage'
 
 export const PASSWORD = 'Password123!'
 
@@ -28,12 +32,12 @@ export async function registerViaApi(request: APIRequestContext, user = uniqueUs
 }
 
 export async function loginViaUi(page: Page, user: TestUser) {
-  await page.goto('/login')
-  await page.getByPlaceholder('Type your email').fill(user.email)
-  await page.getByPlaceholder('Type your password').fill(user.password)
-  await page.getByRole('button', { name: 'Login' }).click()
+  const loginPage = new LoginPage(page)
+  const header = new HeaderComponent(page)
+
+  await loginPage.loginAs(user)
   await expect(page).toHaveURL('/')
-  await expect(page.getByRole('link', { name: 'Transactions' })).toBeVisible()
+  await expect(header.transactionsLink).toBeVisible()
 }
 
 export async function createAndLogin(page: Page, request: APIRequestContext) {
@@ -43,22 +47,20 @@ export async function createAndLogin(page: Page, request: APIRequestContext) {
 }
 
 export async function openBalanceModal(page: Page) {
-  await page.goto('/transactions')
-  await page.getByRole('button', { name: 'Add balance' }).click()
-  await expect(page.getByRole('heading', { name: 'Add balance' })).toBeVisible()
+  const transactionsPage = new TransactionsPage(page)
+  await transactionsPage.openBalanceModal()
+  await expect(transactionsPage.modalTitle).toBeVisible()
 }
 
 export async function topUp(page: Page, amount: number) {
+  const transactionsPage = new TransactionsPage(page)
+  const header = new HeaderComponent(page)
+
   await openBalanceModal(page)
-  await page.getByPlaceholder('Enter sum').fill(String(amount))
-  await page.getByRole('button', { name: 'Add', exact: true }).click()
-  await expect(page.getByRole('heading', { name: `Balance: ${amount}` })).toBeVisible()
+  await transactionsPage.submitTopUp(amount)
+  await expect(header.balance).toHaveText(`Balance: ${amount}`)
 }
 
 export async function transfer(page: Page, amount: number, phone = '+7 999 123-45-67') {
-  await page.goto('/')
-  await page.getByPlaceholder('+7 999 123-45-67').fill(phone)
-  await page.getByPlaceholder('0.00').fill(String(amount))
-  await page.getByPlaceholder('e.g. debt repayment').fill('E2E transfer')
-  await page.getByRole('button', { name: 'Send' }).click()
+  await new TransferPage(page).transfer(amount, phone)
 }
