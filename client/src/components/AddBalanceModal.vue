@@ -29,10 +29,10 @@ const submit = () => {
 <template>
   <div v-if="props.isModalOpen" class="modal-overlay">
     <div class="modal">
-      <h3>Add balance</h3>
-      <AppInput v-model.number="amount" type="number" placeholder="Enter sum" name="balance" />
+      <h3 data-testid="balance-modal-title">Add balance</h3>
+      <AppInput data-testid="balance-amount" v-model.number="amount" type="number" placeholder="Enter sum" name="balance" />
       <div class="modal-actions">
-        <button class="confirm-btn" @click="submit" type="submit">Add</button>
+        <button data-testid="balance-submit" class="confirm-btn" @click="submit" type="submit">Add</button>
         <button class="cancel-btn" @click="closeModal">Cancel</button>
       </div>
     </div>

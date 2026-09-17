@@ -44,6 +44,7 @@ const handleRegister = async () => {
       <div class="form-group">
         <label>Name</label>
         <AppInput
+          data-testid="register-name"
           type="text"
           v-model="firstName"
           required
@@ -55,6 +56,7 @@ const handleRegister = async () => {
       <div class="form-group">
         <label>Surname</label>
         <AppInput
+          data-testid="register-surname"
           type="text"
           v-model="surname"
           required
@@ -66,6 +68,7 @@ const handleRegister = async () => {
       <div class="form-group">
         <label>Email</label>
         <AppInput
+          data-testid="register-email"
           type="email"
           v-model="email"
           required
@@ -76,12 +79,12 @@ const handleRegister = async () => {
 
       <div class="form-group">
         <label>Password</label>
-        <AppInput type="password" v-model="password" required name="Type your password" />
+        <AppInput data-testid="register-password" type="password" v-model="password" required name="Type your password" />
       </div>
 
-      <p v-if="error" class="error">{{ error }}</p>
+      <p v-if="error" class="error" data-testid="register-error">{{ error }}</p>
 
-      <AppButton type="submit"> Register </AppButton>
+      <AppButton data-testid="register-submit" type="submit"> Register </AppButton>
     </form>
   </div>
 </template>

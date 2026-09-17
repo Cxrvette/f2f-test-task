@@ -8,7 +8,7 @@ const type = computed(() => snackbarType.value)
 </script>
 
 <template>
-  <div v-if="visible" class="snackbar" :class="type">
+  <div v-if="visible" class="snackbar" :class="type" data-testid="snackbar">
     {{ message }}
   </div>
 </template>

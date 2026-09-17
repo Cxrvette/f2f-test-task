@@ -17,7 +17,7 @@ const props = defineProps<{
       </tr>
     </thead>
     <tbody>
-      <tr v-for="transaction in props.transactions" :key="transaction.id">
+      <tr v-for="transaction in props.transactions" :key="transaction.id" data-testid="transaction-row">
         <td>{{ transaction.id }}</td>
         <td>{{ transaction.createdAt }}</td>
         <td>{{ transaction.transactionStatus }}</td>

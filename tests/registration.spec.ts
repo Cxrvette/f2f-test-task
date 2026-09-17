@@ -1,16 +1,13 @@
 import { test, expect } from '@playwright/test'
 import { loginViaUi, uniqueUser } from './helpers'
+import { RegisterPage } from './pages/RegisterPage'
 
 test.describe('Регистрация', () => {
   test('High: новый пользователь регистрируется и может войти', async ({ page }) => {
     const user = uniqueUser('registration')
-    await page.goto('/register')
+    const registerPage = new RegisterPage(page)
 
-    await page.getByPlaceholder('Type your name').fill(user.name)
-    await page.getByPlaceholder('Type your surname').fill(user.surname)
-    await page.getByPlaceholder('Type your email').fill(user.email)
-    await page.locator('input[type="password"]').fill(user.password)
-    await page.getByRole('button', { name: 'Register' }).click()
+    await registerPage.register(user)
 
     await expect(page).toHaveURL('/login')
     await loginViaUi(page, user)
@@ -18,29 +15,21 @@ test.describe('Регистрация', () => {
 
   test('High: повторная регистрация с существующим email отклоняется', async ({ page }) => {
     const user = uniqueUser('duplicate')
+    const registerPage = new RegisterPage(page)
 
-    const register = async () => {
-      await page.goto('/register')
-      await page.getByPlaceholder('Type your name').fill(user.name)
-      await page.getByPlaceholder('Type your surname').fill(user.surname)
-      await page.getByPlaceholder('Type your email').fill(user.email)
-      await page.locator('input[type="password"]').fill(user.password)
-      await page.getByRole('button', { name: 'Register' }).click()
-    }
-
-    await register()
+    await registerPage.register(user)
     await expect(page).toHaveURL('/login')
-    await register()
-    await expect(page.getByText('User with this email already exists')).toBeVisible()
+    await registerPage.register(user)
+    await expect(registerPage.error).toHaveText('User with this email already exists')
     await expect(page).toHaveURL('/register')
   })
 
   test('Medium: обязательные поля нельзя оставить пустыми', async ({ page }) => {
-    await page.goto('/register')
-    await page.getByRole('button', { name: 'Register' }).click()
+    const registerPage = new RegisterPage(page)
+    await registerPage.submitEmptyForm()
 
     await expect(page).toHaveURL('/register')
-    await expect(page.getByPlaceholder('Type your name')).toBeFocused()
-    await expect(page.getByPlaceholder('Type your name')).toHaveAttribute('required', '')
+    await expect(registerPage.nameInput).toBeFocused()
+    await expect(registerPage.nameInput).toHaveAttribute('required', '')
   })
 })
